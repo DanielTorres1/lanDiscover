@@ -46,6 +46,8 @@ echo ""
 exit
 fi
 
+echo "IP = "`ifconfig eth0 | grep -i mask | awk '{print $2}'`
+
 
 echo -e "$OKBLUE IP del servidor de nombres local  $RESET" 
 read nameserver
@@ -62,7 +64,11 @@ fi
   
 
 echo -e "\t $OKGREEN ESCANEANDO RED CLASE A $RESET"
-discoverNetA.sh -n $netA_base -o $FILE &
+if [ -n "$nameserver" ]; then
+	discoverNetA.sh -n $netA_base -o $FILE -d $nameserver&
+else
+	discoverNetA.sh -n $netA_base -o $FILE &
+fi
 
 if [ $entel = "s" ] ; then
 
@@ -70,9 +76,18 @@ echo "NO escanearemos la red clase B"
 echo "ENTEL usa este segmento :("
 else
 	echo -e "\t $OKGREEN ESCANEANDO RED CLASE B $RESET"
-	discoverNetA.sh -n $netB_base -o $FILE &
+	if [ -n "$nameserver" ]; then
+		discoverNetB.sh -n $netB_base -o $FILE -d $nameserver&
+	else
+		discoverNetB.sh -n $netB_base -o $FILE &
+	fi
 	
 fi
 
 echo -e "\t $OKGREEN ESCANEANDO RED CLASE C $RESET"
-discoverNetA.sh -n $netC_base -o $FILE &
+
+	if [ -n "$nameserver" ]; then
+		discoverNetC.sh -n $netC_base -o $FILE -d $nameserver&
+	else
+		discoverNetC.sh -n $netC_base -o $FILE &
+	fi

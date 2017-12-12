@@ -2,10 +2,11 @@
 # Author: Daniel Torres
 # daniel.torres@owasp.org
 
-while getopts ":n:o:" OPTIONS
+while getopts ":n:d:o:" OPTIONS
 do
             case $OPTIONS in            
-            n)     netB_base=$OPTARG;;            
+            d)     nameserver=$OPTARG;;
+            n)     netB_base=$OPTARG;;
             o)     FILE=$OPTARG;;            
             ?)     printf "Opcion invalida: -$OPTARG\n" $0
                           exit 2;;
@@ -13,16 +14,18 @@ do
 done
 
 FILE=${FILE:=NULL}
+nameserver=${nameserver:=NULL}
 netB_base=${netB_base:=NULL}
 
 if [ $FILE = NULL ] ; then
 
 echo "|              														 			"
-echo "| USO: discoverNetB.sh -n 10.0.0.0/24 -o redes.txt]    "
+echo "| USO: discoverNet.sh -n 10.0.0.0/24 -o redes.txt -d 10.0.0.2]    "
 echo "|																		 			"
 echo ""
 exit
 fi
+
 
 
 for X in `seq 16 31`;
