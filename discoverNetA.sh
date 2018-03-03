@@ -37,7 +37,7 @@ for X in `seq 0 30`;
 		netA=${netA//Y/$Y}
 		echo "Escaneando $netA"
 		resp_ping=`fping -a -g $netA 2>/dev/null`		
-		netA=${netA//\/29/\/24}		
+		netA=${netA//\/28/\/24}		
 		resp_smb=`nbtscan $netA  | grep ^1 `
 		resp_dns=""
 		if [ -n "$nameserver" ]; then			 

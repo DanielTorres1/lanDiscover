@@ -9,9 +9,9 @@ RESET='\e[0m'
 
 
 ################## Config HERE ####################
-netA_base="10.X.Y.0/29"; # Solo revisar hasta las redes 10.0.0.0 - 10.30.32.0
-netB_base="172.X.Y.0/29"; # Solo revisar hasta las redes 172.16.0.0 - 172.31.32.0
-netC_base="192.168.X.0/29";
+netA_base="10.X.Y.0/28"; # Solo revisar hasta las redes 10.0.0.0 - 10.30.32.0
+netB_base="172.X.Y.0/28"; # Solo revisar hasta las redes 172.16.0.0 - 172.31.32.0
+netC_base="192.168.X.0/28";
 ####################################################
 
 

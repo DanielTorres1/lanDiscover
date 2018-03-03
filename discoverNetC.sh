@@ -32,7 +32,7 @@ for X in `seq 0 220`;
 	netC=${netC//X/$X}		
 	echo "Escaneando $netC"
 	resp_ping=`fping -a -g $netC 2>/dev/null`				
-	netC=${netC//\/29/\/24}
+	netC=${netC//\/28/\/24}
 	resp_smb=`nbtscan $netC  | grep ^1 `
 	resp_dns=""
 	if [ -n "$nameserver" ]; then			 
