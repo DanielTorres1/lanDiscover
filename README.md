@@ -1,6 +1,6 @@
 # lanDiscover
 
-LansDiscover realiza un escaneo primiliar SMB,ICMP,DNS para descubrir subredes utilizadas
+LansDiscover puede ser utilizada en una red intern para realizar un escaneo primiliar SMB,ICMP,DNS para descubrir subredes utilizadas
 
 
 ## ¿COMO INSTALAR?
