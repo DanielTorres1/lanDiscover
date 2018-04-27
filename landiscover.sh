@@ -18,6 +18,13 @@ netC_base="192.168.X.0/28";
 function print_ascii_art {
 cat << "EOF"
 
+  _                 _____  _                             
+ | |               |  __ \(_)                            
+ | |     __ _ _ __ | |  | |_ ___  ___ _____   _____ _ __ 
+ | |    / _` | '_ \| |  | | / __|/ __/ _ \ \ / / _ \ '__|
+ | |___| (_| | | | | |__| | \__ \ (_| (_) \ V /  __/ |   
+ |______\__,_|_| |_|_____/|_|___/\___\___/ \_/ \___|_|   
+                                                                                                                 
 					daniel.torres@owasp.org
 					https://github.com/DanielTorres1
 
@@ -46,37 +53,36 @@ echo ""
 exit
 fi
 
-echo "IP = "`ifconfig eth0 | grep -i mask | awk '{print $2}'`
+#echo "IP actual = "`ifconfig eth0 | grep -i mask | awk '{print $2}'`
 
+nameserver=`grep --color=never nameserver /etc/resolv.conf | awk '{print $2}' | head -1`
 
-echo -e "$OKBLUE IP del servidor de nombres local  $RESET" 
-read nameserver
+echo -e "Servidor DNS actual:$nameserver" 
+echo -e "$OKBLUE ¿Es un servidor de nombres del directorio activo? s/n $RESET" 
+read ADserver
 
-echo -e "$OKBLUE Test inicial $RESET" 
-fping -a -g 172.16.1.0/29
-
-echo -e "$OKBLUE Es un enlace de ENTEL?? s/n $RESET" 
+#echo -e "Test inicial - Verificando si es el ISP es ENTEL" 
+#entel=`fping -a -g 172.16.1.0/29`
+#entel=`fping -a -g 10.0.0.0/29 2>/dev/null`
+#echo "resultado Inicial: ($entel)"
+echo -e "$OKBLUE ¿El ISP es ENTEL? s/n $RESET" 
 read entel
 
-if [ -n "$nameserver" ]; then
-    echo "nameserver $nameserver" > /etc/resolv.conf          
-fi
-  
-
-echo -e "\t $OKGREEN ESCANEANDO RED CLASE A $RESET"
-if [ -n "$nameserver" ]; then
+echo -e "\t $OKGREEN ESCANEANDO RED CLASE A (10.0.0.0 - 10.30.32.0) $RESET"
+if [ $ADserver = "s"  ]; then
 	discoverNetA.sh -n $netA_base -o $FILE -d $nameserver&
 else
 	discoverNetA.sh -n $netA_base -o $FILE &
 fi
 
-if [ $entel = "s" ] ; then
+if [ $entel = "s"  ]; then
 
-echo "NO escanearemos la red clase B"
-echo "ENTEL usa este segmento :("
+#echo "Al parecer es una conexion de ENTEL"
+echo "NO escanearemos la red clase B porque ENTEL lo usa."
+
 else
-	echo -e "\t $OKGREEN ESCANEANDO RED CLASE B $RESET"
-	if [ -n "$nameserver" ]; then
+	echo -e "\t $OKGREEN ESCANEANDO RED CLASE B (172.16.0.0 - 172.31.32.0) $RESET"
+	if [ $ADserver = "s"  ]; then
 		discoverNetB.sh -n $netB_base -o $FILE -d $nameserver&
 	else
 		discoverNetB.sh -n $netB_base -o $FILE &
@@ -84,9 +90,9 @@ else
 	
 fi
 
-echo -e "\t $OKGREEN ESCANEANDO RED CLASE C $RESET"
+echo -e "\t $OKGREEN ESCANEANDO RED CLASE C (192.168.0.0 - 192.168.220.0) $RESET"
 
-	if [ -n "$nameserver" ]; then
+	if [ $ADserver = "s"  ]; then
 		discoverNetC.sh -n $netC_base -o $FILE -d $nameserver&
 	else
 		discoverNetC.sh -n $netC_base -o $FILE &
