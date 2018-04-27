@@ -1,6 +1,6 @@
 # lanDiscover
 
-LansDiscover puede ser utilizada en una red intern para realizar un escaneo primiliar SMB,ICMP,DNS para descubrir subredes utilizadas
+LansDiscover puede ser utilizada en una red interna para realizar un escaneo primiliar SMB,ICMP,DNS para descubrir subredes utilizadas. Debido al rango de direcciones IP (Clase A,B,C) que escanea, la herramienta tarda bastante.
 
 
 ## ¿COMO INSTALAR?
