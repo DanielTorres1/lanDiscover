@@ -56,44 +56,21 @@ fi
 #echo "IP actual = "`ifconfig eth0 | grep -i mask | awk '{print $2}'`
 
 nameserver=`grep --color=never nameserver /etc/resolv.conf | awk '{print $2}' | head -1`
+echo "Usando $nameserver como servidor de nombre"
 
-echo -e "Servidor DNS actual:$nameserver" 
-echo -e "$OKBLUE ¿Es un servidor de nombres del directorio activo? s/n $RESET" 
-read ADserver
-
-#echo -e "Test inicial - Verificando si es el ISP es ENTEL" 
-#entel=`fping -a -g 172.16.1.0/29`
-#entel=`fping -a -g 10.0.0.0/29 2>/dev/null`
-#echo "resultado Inicial: ($entel)"
-echo -e "$OKBLUE ¿El ISP es ENTEL? s/n $RESET" 
-read entel
 
 echo -e "\t $OKGREEN ESCANEANDO RED CLASE A (10.0.0.0 - 10.30.32.0) $RESET"
-if [ $ADserver = "s"  ]; then
-	discoverNetA.sh -n $netA_base -o $FILE -d $nameserver&
-else
-	discoverNetA.sh -n $netA_base -o $FILE &
-fi
 
-if [ $entel = "s"  ]; then
+discoverNetA.sh -n $netA_base -o $FILE &
 
-#echo "Al parecer es una conexion de ENTEL"
-echo "NO escanearemos la red clase B porque ENTEL lo usa."
 
-else
-	echo -e "\t $OKGREEN ESCANEANDO RED CLASE B (172.16.0.0 - 172.31.32.0) $RESET"
-	if [ $ADserver = "s"  ]; then
-		discoverNetB.sh -n $netB_base -o $FILE -d $nameserver&
-	else
-		discoverNetB.sh -n $netB_base -o $FILE &
-	fi
+echo -e "\t $OKGREEN ESCANEANDO RED CLASE B (172.16.0.0 - 172.31.32.0) $RESET"
+
+#discoverNetB.sh -n $netB_base -o $FILE &
+discoverNetA.sh -n "196.X.Y.0/28" -o $FILE &
+
+discoverNetA.sh -n "198.X.Y.0/28" -o $FILE &
 	
-fi
 
 echo -e "\t $OKGREEN ESCANEANDO RED CLASE C (192.168.0.0 - 192.168.220.0) $RESET"
-
-	if [ $ADserver = "s"  ]; then
-		discoverNetC.sh -n $netC_base -o $FILE -d $nameserver&
-	else
-		discoverNetC.sh -n $netC_base -o $FILE &
-	fi
+discoverNetC.sh -n $netC_base -o $FILE &

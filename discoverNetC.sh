@@ -34,10 +34,8 @@ for X in `seq 0 220`;
 	resp_ping=`fping -a -g $netC 2>/dev/null`				
 	netC=${netC//\/28/\/24}
 	resp_smb=`nbtscan $netC  | grep ^1 `
-	resp_dns=""
-	if [ -n "$nameserver" ]; then			 
-		resp_dns=`dnsrecon -r $netC| grep --color=never PTR`
-	fi
+	#resp_dns=""
+	#resp_dns=`dnsrecon -r $netC| grep --color=never PTR`
 
 	if [ -n "$resp_ping" ] ; then
 		
@@ -50,9 +48,9 @@ for X in `seq 0 220`;
 		echo "$netC" >> $FILE
 	fi	
 	
-	if [ -n "$resp_dns" ] ; then		
-		echo -e "\t [+]$OKBLUE Encontre host vivos en la red $netC (dns) $RESET"
-		echo "$netC" >> $FILE
-	fi	
-			
+	#if [ -n "$resp_dns" ] ; then		
+		#echo -e "\t [+]$OKBLUE Encontre host vivos en la red $netC (dns) $RESET"
+		#echo "$netC" >> $FILE
+	#fi	
+ sleep 3			
  done

@@ -39,10 +39,8 @@ for X in `seq 16 31`;
 		resp_ping=`fping -a -g $netB 2>/dev/null`				
 		netB=${netB//\/28/\/24}
 		resp_smb=`nbtscan $netB  | grep ^1 `
-		resp_dns=""
-		if [ -n "$nameserver" ]; then			 
-			resp_dns=`dnsrecon -r $netB| grep --color=never PTR`
-		fi
+#		resp_dns=""
+		#resp_dns=`dnsrecon -r $netB| grep --color=never PTR`
 
 		if [ -n "$resp_ping" ] ; then			
 			echo -e "\t [+]$OKBLUE Encontre host vivos en la red $netB (ping) $RESET"
@@ -54,12 +52,11 @@ for X in `seq 16 31`;
 			echo "$netB" >> $FILE
 		fi	
 		
-		if [ -n "$resp_dns" ] ; then
-			
-			echo -e "\t [+]$OKBLUE Encontre host vivos en la red $netB (dns) $RESET"
-			echo "$netB" >> $FILE
-		fi	
-				
+#		if [ -n "$resp_dns" ] ; then
+#			echo -e "\t [+]$OKBLUE Encontre host vivos en la red $netB (dns) $RESET"
+			#echo "$netB" >> $FILE
+		#fi	
+	sleep 3
 	done
 	
  done
